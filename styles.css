@@ -16,6 +16,7 @@
   --safe-right: env(safe-area-inset-right, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
+  --header-h: 56px;
   --content-bg: transparent;
 }
 
@@ -64,16 +65,11 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   padding:
-    calc(12px + var(--safe-top))
+    0
     calc(12px + var(--safe-right))
-    calc(12px + var(--safe-bottom))
+    0
     calc(12px + var(--safe-left));
   clip-path: none !important;
-}
-
-/* Гарантированный нижний отступ для обычного контента */
-body {
-  padding-bottom: calc(16px + var(--safe-bottom));
 }
 
 body.has-menu-open,
@@ -328,18 +324,12 @@ main {
 }
 
 .hero-intro {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   text-align: center;
-  min-height: 100vh;
-  min-height: 100svh;
-  min-height: 100dvh;
-  padding:
-    calc(16px + var(--safe-top))
-    calc(16px + var(--safe-right))
-    calc(16px + var(--safe-bottom))
-    calc(16px + var(--safe-left));
+  min-block-size: calc(100dvh - (var(--safe-top) + var(--safe-bottom)));
+  padding-block: calc(16px + var(--safe-top)) calc(16px + var(--safe-bottom));
+  padding-inline: calc(16px + var(--safe-left)) calc(16px + var(--safe-right));
   background: transparent;
   position: relative;
   z-index: 1;
@@ -557,7 +547,7 @@ body.is-menu-closing .site-menu-toggle__icon span:nth-child(3) {
   max-height: none;
   overflow: visible;
   perspective: 1400px;
-  scroll-margin-top: calc(var(--safe-top) + 56px);
+  scroll-margin-top: calc(var(--safe-top) + var(--header-h));
   padding-bottom: calc(24px + var(--safe-bottom));
 }
 
