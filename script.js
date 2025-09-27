@@ -282,6 +282,16 @@ if (document.readyState === 'loading') {
   initSentences();
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.querySelector('[data-scroll-to-sentences]');
+  const target = document.getElementById('sentences');
+  if (btn && target) {
+    btn.addEventListener('click', () => {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+});
+
 (function () {
   const toggle = document.querySelector('[data-menu-toggle]');
   const menu = document.getElementById('site-menu');
