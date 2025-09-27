@@ -168,35 +168,36 @@
   });
 })();
 
-document.addEventListener('DOMContentLoaded', () => {
+function initSentences() {
   const host = document.getElementById('sentences');
   if (!host) return;
+
   const data =
     window.SITE_CONFIG && Array.isArray(window.SITE_CONFIG.SENTENCES)
       ? window.SITE_CONFIG.SENTENCES
       : [];
+
   if (!host.children.length && data.length) {
-    host.innerHTML = data.map((s) => `<p class='sentence'>${s}</p>`).join('');
+    const fragment = document.createDocumentFragment();
+    data.forEach((text) => {
+      const sentence = document.createElement('p');
+      sentence.className = 'sentence';
+      sentence.textContent = text;
+      fragment.appendChild(sentence);
+    });
+    host.appendChild(fragment);
   }
-});
 
-(function () {
-  const { SENTENCES } = window.SITE_CONFIG || {};
-  if (!Array.isArray(SENTENCES) || SENTENCES.length === 0) return;
+  const nodes = Array.from(host.querySelectorAll('.sentence'));
+  if (nodes.length === 0) {
+    return;
+  }
 
-  const container = document.getElementById('sentences');
-  if (!container) return;
-
-  const total = SENTENCES.length;
-  const nodes = SENTENCES.map((text, index) => {
-    const sentence = document.createElement('p');
-    sentence.className = 'sentence';
-    sentence.textContent = text;
-    sentence.setAttribute('role', 'listitem');
-    sentence.setAttribute('aria-setsize', String(total));
-    sentence.setAttribute('aria-posinset', String(index + 1));
-    container.appendChild(sentence);
-    return sentence;
+  const total = nodes.length;
+  nodes.forEach((node, index) => {
+    node.setAttribute('role', 'listitem');
+    node.setAttribute('aria-setsize', String(total));
+    node.setAttribute('aria-posinset', String(index + 1));
   });
 
   const revealed = new Set();
@@ -270,7 +271,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('scroll', requestUpdate, { passive: true });
   window.addEventListener('resize', requestUpdate);
-})();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initSentences, { once: true });
+} else {
+  initSentences();
+}
 
 (function () {
   const toggle = document.querySelector('[data-menu-toggle]');

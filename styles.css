@@ -345,13 +345,10 @@ main {
 .site-header {
   position: sticky;
   top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: calc(var(--viewport-unit) * 100);
-  padding: clamp(32px, 8vh, 96px) clamp(24px, 6vw, 60px);
   z-index: 10;
+  display: block;
+  width: 100%;
+  padding: clamp(32px, 8vh, 96px) clamp(24px, 6vw, 60px);
 }
 
 .site-header__inner {
@@ -361,6 +358,7 @@ main {
   justify-content: center;
   gap: clamp(16px, 3vw, 36px);
   width: min(960px, 100%);
+  margin: 0 auto;
   pointer-events: auto;
   text-align: center;
 }
@@ -385,6 +383,7 @@ body.is-menu-closing .site-lockup {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  position: static;
   margin: 0;
   padding: 0;
   border: none;
@@ -402,6 +401,16 @@ body.is-menu-closing .site-lockup {
   text-align: center;
   white-space: nowrap;
   transition: color 200ms ease;
+  transform: none;
+}
+
+.center-fixed,
+.hero-center,
+.lock-center {
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
 }
 
 .site-brand:hover {
