@@ -593,3 +593,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   trigger.addEventListener('click', scrollToSentences);
 })();
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hero = document.querySelector('.hero-intro');
+  if (!hero) return;
+
+  const ro = new IntersectionObserver(([e]) => {
+    document.body.classList.toggle('is-past-hero', e.intersectionRatio === 0);
+  }, { threshold: 0, rootMargin: '0px 0px 0px 0px' });
+
+  ro.observe(hero);
+});
