@@ -1,6 +1,7 @@
 (function () {
   const root = document.documentElement;
   const vv = window.visualViewport;
+  const appliedValues = new Map();
 
   function update() {
     const top = vv ? Math.max(0, vv.offsetTop) : null;
@@ -10,9 +11,22 @@
 
     function setVar(name, val) {
       if (val == null) return;
-      const current = parseFloat(getComputedStyle(root).getPropertyValue(name)) || 0;
-      if (Math.abs(current - val) > 0.5) {
-        root.style.setProperty(name, val + 'px');
+
+      const clamped = Math.max(0, val);
+      const previous = appliedValues.has(name) ? appliedValues.get(name) : null;
+      const isEffectivelyZero = clamped < 0.5;
+
+      if (isEffectivelyZero) {
+        if (previous != null) {
+          root.style.removeProperty(name);
+          appliedValues.delete(name);
+        }
+        return;
+      }
+
+      if (previous == null || Math.abs(previous - clamped) > 0.5) {
+        root.style.setProperty(name, clamped + 'px');
+        appliedValues.set(name, clamped);
       }
     }
 
