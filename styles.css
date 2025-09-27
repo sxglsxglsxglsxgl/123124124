@@ -322,6 +322,33 @@ main {
   min-height: 100vh;
 }
 
+.hero-intro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  padding:
+    calc(16px + var(--safe-top))
+    calc(16px + var(--safe-right))
+    calc(16px + var(--safe-bottom))
+    calc(16px + var(--safe-left));
+  background: transparent;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-title {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  font-size: clamp(32px, 8vw, 64px);
+  color: #fff;
+}
+
 .site-header {
   position: sticky;
   top: 0;
@@ -525,6 +552,7 @@ body.is-menu-closing .site-menu-toggle__icon span:nth-child(3) {
   max-height: none;
   overflow: visible;
   perspective: 1400px;
+  scroll-margin-top: 72px;
 }
 
 #sentences .sentence {
