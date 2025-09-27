@@ -68,32 +68,12 @@ body {
     calc(12px + var(--safe-right))
     calc(12px + var(--safe-bottom))
     calc(12px + var(--safe-left));
-}
-
-.safe-frame {
-  position: fixed;
-  top: var(--safe-top);
-  right: var(--safe-right);
-  bottom: var(--safe-bottom);
-  left: var(--safe-left);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  contain: layout paint size;
-  z-index: 0;
+  clip-path: none !important;
 }
 
 body.has-menu-open,
 body.is-menu-closing {
   overflow: hidden;
-}
-
-.safe-frame .content {
-  position: relative;
-  flex: 1 1 auto;
-  height: 100%;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 /* Контент — поверх оверлеев, без размытий/скрытий */
@@ -363,6 +343,27 @@ main {
   text-align: center;
 }
 
+.site-brand,
+.site-lockup,
+.site-title,
+.hero,
+.center-fixed,
+.centerpiece {
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+}
+
+.hero,
+.lock-center,
+.vh-center {
+  display: block !important;
+  align-items: initial !important;
+  justify-content: initial !important;
+  height: auto !important;
+}
+
 .site-lockup {
   display: flex;
   flex-direction: column;
@@ -402,15 +403,6 @@ body.is-menu-closing .site-lockup {
   white-space: nowrap;
   transition: color 200ms ease;
   transform: none;
-}
-
-.center-fixed,
-.hero-center,
-.lock-center {
-  position: static !important;
-  top: auto !important;
-  left: auto !important;
-  transform: none !important;
 }
 
 .site-brand:hover {
