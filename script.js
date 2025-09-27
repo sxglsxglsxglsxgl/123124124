@@ -189,6 +189,9 @@ function initSentences() {
   }
 
   const nodes = Array.from(host.querySelectorAll('.sentence'));
+
+  console.info('[sentences] nodes:', host.children.length, 'data:', data.length);
+
   if (nodes.length === 0) {
     return;
   }
