@@ -1,3 +1,4 @@
+/* Safe-area переменные с фоллбеком */
 :root {
   color-scheme: dark;
   --background: #050505;
@@ -40,6 +41,7 @@
   display: none !important;
 }
 
+/* Корень: фон заливает unsafe-зоны, скролл у документа */
 html,
 body {
   margin: 0;
@@ -49,6 +51,8 @@ body {
   min-height: 100dvh;
   background: #000;
   color: #fff;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
   /* iOS: раскрытые панели браузера остаются системным хромом — unsafe-зоны видны лишь при схлопнутых панелях или в PWA */
 }
 
@@ -59,6 +63,11 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  padding:
+    calc(12px + var(--safe-top))
+    calc(12px + var(--safe-right))
+    calc(12px + var(--safe-bottom))
+    calc(12px + var(--safe-left));
 }
 
 .safe-frame {
@@ -87,14 +96,20 @@ body.is-menu-closing {
   -webkit-overflow-scrolling: touch;
 }
 
+/* Контент — поверх оверлеев, без размытий/скрытий */
 .content {
+  position: relative;
+  z-index: 1;
   box-sizing: border-box;
   min-height: 100vh;
   min-height: 100svh;
   min-height: 100dvh;
   min-height: calc((var(--viewport-unit) * 100) - (var(--safe-top) + var(--safe-bottom)));
   padding: 16px;
-  background: var(--content-bg);
+  background: transparent !important;
+  filter: none !important;
+  opacity: 1 !important;
+  overflow: visible;
 }
 
 .visually-hidden {
@@ -165,6 +180,14 @@ html.safe-test body::after {
   background: rgba(5, 5, 5, 0.82);
   pointer-events: none;
   z-index: 0;
+}
+
+/* Оверлеи ниже контента и без кликов */
+body::before,
+body::after,
+.backdrop {
+  z-index: 0 !important;
+  pointer-events: none !important;
 }
 
 .backdrop::after {
@@ -320,14 +343,15 @@ main {
 }
 
 .site-header {
-  position: relative;
+  position: sticky;
+  top: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   min-height: calc(var(--viewport-unit) * 100);
   padding: clamp(32px, 8vh, 96px) clamp(24px, 6vw, 60px);
-  z-index: 32;
+  z-index: 10;
 }
 
 .site-header__inner {
@@ -390,10 +414,11 @@ body.is-menu-closing .site-lockup {
   text-shadow: 0 0 26px rgba(255, 255, 255, 0.35);
 }
 
+/* Элементы у краёв — якорим к safe-insets */
 .site-menu-toggle {
   position: fixed;
-  top: calc(var(--safe-top) + clamp(24px, 4vw, 48px));
-  right: calc(var(--safe-right) + clamp(24px, 4vw, 48px));
+  top: calc(var(--safe-top) + 16px);
+  right: calc(var(--safe-right) + 16px);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -405,8 +430,17 @@ body.is-menu-closing .site-lockup {
   background: none;
   color: rgba(255, 255, 255, 0.96);
   cursor: pointer;
-  z-index: 40;
+  z-index: 20;
   transition: color 340ms ease;
+}
+
+.cta-fixed,
+.site-footer-fixed {
+  position: fixed;
+  left: calc(var(--safe-left) + 16px);
+  right: calc(var(--safe-right) + 16px);
+  bottom: calc(var(--safe-bottom) + 16px);
+  z-index: 20;
 }
 
 .site-menu-toggle:hover,
@@ -476,17 +510,25 @@ body.is-menu-closing .site-menu-toggle__icon span:nth-child(3) {
   transform: translateY(-50%) rotate(-45deg);
 }
 
+/* #sentences — сделать видимым и поверх градиентов */
 #sentences {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  filter: none !important;
+  z-index: 1;
   width: min(920px, 100%);
   margin: 0 auto;
   padding: clamp(48px, 22vh, 200px) clamp(24px, 8vw, 140px) clamp(200px, 52vh, 420px);
-  max-height: calc((var(--viewport-unit) * 100) - (var(--safe-top) + var(--safe-bottom)));
-  overflow: hidden;
+  max-height: none;
+  overflow: visible;
   perspective: 1400px;
+}
+
+#sentences .sentence {
+  color: #fff;
+  mix-blend-mode: normal;
 }
 
 .sentence {
@@ -600,8 +642,8 @@ body.is-menu-closing .site-menu-toggle__icon span:nth-child(3) {
   }
 
   .site-menu-toggle {
-    top: calc(var(--safe-top) + clamp(20px, 9vw, 36px));
-    right: calc(var(--safe-right) + clamp(20px, 9vw, 36px));
+    top: calc(var(--safe-top) + 16px);
+    right: calc(var(--safe-right) + 16px);
     width: clamp(40px, 14vw, 52px);
     height: clamp(40px, 14vw, 52px);
   }

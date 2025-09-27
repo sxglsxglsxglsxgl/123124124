@@ -168,6 +168,18 @@
   });
 })();
 
+document.addEventListener('DOMContentLoaded', () => {
+  const host = document.getElementById('sentences');
+  if (!host) return;
+  const data =
+    window.SITE_CONFIG && Array.isArray(window.SITE_CONFIG.SENTENCES)
+      ? window.SITE_CONFIG.SENTENCES
+      : [];
+  if (!host.children.length && data.length) {
+    host.innerHTML = data.map((s) => `<p class='sentence'>${s}</p>`).join('');
+  }
+});
+
 (function () {
   const { SENTENCES } = window.SITE_CONFIG || {};
   if (!Array.isArray(SENTENCES) || SENTENCES.length === 0) return;
