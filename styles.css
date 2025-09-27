@@ -71,6 +71,11 @@ body {
   clip-path: none !important;
 }
 
+/* Гарантированный нижний отступ для обычного контента */
+body {
+  padding-bottom: calc(16px + var(--safe-bottom));
+}
+
 body.has-menu-open,
 body.is-menu-closing {
   overflow: hidden;
@@ -552,7 +557,8 @@ body.is-menu-closing .site-menu-toggle__icon span:nth-child(3) {
   max-height: none;
   overflow: visible;
   perspective: 1400px;
-  scroll-margin-top: 72px;
+  scroll-margin-top: calc(var(--safe-top) + 56px);
+  padding-bottom: calc(24px + var(--safe-bottom));
 }
 
 #sentences .sentence {
@@ -684,6 +690,7 @@ body.is-menu-closing .site-menu-toggle__icon span:nth-child(3) {
 
   #sentences {
     padding: clamp(48px, 16vh, 120px) clamp(20px, 9vw, 52px) clamp(200px, 56vh, 360px);
+    padding-bottom: calc(24px + var(--safe-bottom));
   }
 
   .sentence {
@@ -707,6 +714,23 @@ body.is-menu-closing .site-menu-toggle__icon span:nth-child(3) {
   .site-menu__list {
     gap: clamp(20px, 8vw, 48px);
   }
+}
+
+/* 1) Сначала полностью скрываем текст бренда в шапке (ай-аксессибл оставляем) */
+.site-brand {
+  font-size: 0;
+  line-height: 0;
+}
+
+/* 2) Когда прокрутили герой — показываем компактную версию бренда в шапке */
+body.is-past-hero .site-brand {
+  font-size: 18px;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+.footer-spacer {
+  height: calc(16px + var(--safe-bottom));
 }
 
 @media (prefers-reduced-motion: reduce) {
